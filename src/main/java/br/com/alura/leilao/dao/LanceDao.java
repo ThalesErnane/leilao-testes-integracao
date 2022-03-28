@@ -27,6 +27,12 @@ public class LanceDao {
 				.setParameter("leilao", leilao)
 				.getSingleResult();
 	}
+	
+	public String buscarMenorLanceDoLeilao(Leilao leilao) {
+		return em.createQuery("SELECT l.usuario.nome FROM Lance l WHERE l.valor = (SELECT MIN(lance.valor) FROM Lance lance WHERE lance.leilao = :leilao)", String.class)
+				.setParameter("leilao", leilao)
+				.getSingleResult();
+	}
 
 	public Lance buscarPorId(Long id) {
 		return em.find(Lance.class, id);

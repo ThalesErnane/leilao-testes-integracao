@@ -68,6 +68,55 @@ class LanceDaoTest {
 	}
 	
 	@Test
+	void deveriaBuscarMenorLanceDoLeilao() {
+		Usuario usuario = new UsuarioBuilder()
+				.comNome("Fulano")
+				.comEmail("fulano@email.com")
+				.comSenha("12345678")
+				.criar();
+
+		em.persist(usuario);
+		
+		Usuario usuario2 = new UsuarioBuilder()
+				.comNome("Apolo")
+				.comEmail("apolo@email.com")
+				.comSenha("123456")
+				.criar();
+
+		em.persist(usuario2);
+
+		Leilao leilao = new LeilaoBuilder()
+				.comNome("Mochila")
+				.comValorInicial("500")
+				.comData(LocalDate.now())
+				.comUsuario(usuario)
+				.criar();
+
+		em.persist(leilao);
+
+		Lance lance = new LanceBuilder()
+				.comUsuario(usuario)
+				.comValor("600")
+				.comLeilao(leilao)
+				.criar();
+	
+		em.persist(lance);
+		
+		Lance lanceUsuario2 = new LanceBuilder()
+				.comUsuario(usuario)
+				.comValor("900")
+				.comLeilao(leilao)
+				.criar();
+
+		em.persist(lanceUsuario2);
+
+		String acheiMenorLance = this.dao.buscarMenorLanceDoLeilao(leilao);
+		System.out.println("Menor lance é " + acheiMenorLance );
+		Assert.assertNotNull(acheiMenorLance);
+
+	}
+	
+	@Test
 	void deveriaCadastrarLance() {
 		Usuario usuario = new UsuarioBuilder()
 				.comNome("Fulano")
